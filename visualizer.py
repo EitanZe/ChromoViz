@@ -5,7 +5,7 @@ from scipy.stats import f_oneway
 import numpy as np
 import os
 from sklearn.metrics import r2_score
-
+###
 data_path = 'data/graphs'
 
 def load_data() -> tuple[pd.DataFrame,pd.DataFrame]:
@@ -206,6 +206,7 @@ def cell_type_indiv(cell_df:pd.DataFrame, meta_df:pd.DataFrame,save:bool, chr:st
             plt.show()
             break
         plt.savefig(f'{dir}/indiv_type_{chr}scr/Donor {id} {chr}.png')
+        break
         plt.close()
         
 def ctype_pvalue(df:pd.DataFrame, chr:str) -> float:
