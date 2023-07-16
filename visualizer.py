@@ -5,7 +5,7 @@ from scipy.stats import f_oneway
 import numpy as np
 import os
 from sklearn.metrics import r2_score
-
+###
 data_path = 'data/graphs'
 
 def load_data() -> tuple[pd.DataFrame,pd.DataFrame]:
@@ -206,6 +206,7 @@ def cell_type_indiv(cell_df:pd.DataFrame, meta_df:pd.DataFrame,save:bool, chr:st
             break
         os.mkdir(f'indiv_type_{chr}scr')
         plt.savefig(f'{dir}/indiv_type_{chr}scr/Donor {id} {chr}.png')
+        break
         plt.close()
         
 def ctype_pvalue(df:pd.DataFrame, chr:str) -> float:
@@ -335,8 +336,8 @@ def y_zero_cell(cell_df:pd.DataFrame, meta_df:pd.DataFrame, save:bool, dir=''):
 
 def main():
     main_df, type_df = load_data()
-    # cell_type_indiv(type_df, main_df,False, 'Y', dir=data_path)
-    cell_type_sex(type_df, main_df,True, 'Y', 'male',dir=data_path)
+    cell_type_indiv(type_df, main_df,True, 'Y', dir=data_path)
+    # cell_type_sex(type_df, main_df,True, 'Y', 'male',dir=data_path)
     # scr_against_misc(main_df, True, False, 'Y', 2000,only_age=True,dir=data_path)
     # y_zero_cell(type_df, main_df, True,dir=data_path)
     # print(compare_scores(old_scores_df, new_y_cells)[0:50])
