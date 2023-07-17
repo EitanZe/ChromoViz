@@ -6,26 +6,17 @@ import numpy as np
 import os
 from sklearn.metrics import r2_score
 import math
-###
+
 data_path = 'data/graphs'
 
 def load_data() -> tuple[pd.DataFrame,pd.DataFrame]:
-    
+    '''Used for running this script as a standalone program using locally-stored csv files.
+    Called in main.
+    '''
+
+
     main_df = pd.read_csv('data/csvs/LOY and LOX Master.csv')
     
-    '''
-    for _, row in main_df.iterrows():
-        # if row['ID'] == float('nan'): continue
-        #.strip()[0:str(row['ID']).index('.')]
-        # age = str(row['Age'])[0:str(row['Age']).index('.')]
-        try:
-            id_to_age[str(int(row['ID']))] = row['Age']
-            id_to_sex[str(int(row['ID']))] = row['Sex']
-        except ValueError:
-            pass
-    '''
-    # id_to_age,id_to_sex = __meta_per_id(main_df)        
-
     cell_type_yscr_df = pd.read_csv('data/csvs/Donor-CellType-Yscore 2000UMI (no X genes).csv')
     cell_type_yscr_df.drop(
         cell_type_yscr_df[cell_type_yscr_df['Cell Type'] == 'unassigned'].index, inplace = True)  # get rid of unassigned cells
