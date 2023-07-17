@@ -2,4 +2,4 @@ data/
 Weizmann App/
 *.pdf
 *.csv
-*.png
+# *.png
