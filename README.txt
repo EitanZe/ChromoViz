@@ -2,11 +2,19 @@ Description: The contents of this repo are the work of the LOY on HSPCs group fr
 
 Purpose: The scripts can be used in conjuction to analyze the expression of the genes associated with a certain chromosome using 10x single cell RNA sequencing data and plot it against other features such as age, sex, red blood cell count, etc. It can also be used to identify chromosomal aberrations and their effects. The unique benefits of single cell RNA sequencing is in its ability to differentiate between cell types and to show the unique molecular identifier levels of genes for individual cells.
 
-Instructions: From the data processing file, users can export csvs with scores per cell and per persion about the gene expression levels given a certain gene list. From that, the visualizer files can be used to generate different graphs analyzing the data.
+Instructions: From the data processing file, users can export csvs with scores per cell and per person about the gene expression levels given a certain gene list. From that, the visualizer files can be used to generate different graphs analyzing the data.
 
 visualizer.py is meant to be used as a library to be used in conjuction with scripts like data processing.ipynb to eliminate the need to export to csv then load csv, but can also be run as a standalone program.
 
-The folder chromosomal gene position contains a script in R and Python that are used in conjuction to analyze genes expressed with their position on their chromosome.
+The folder chromosomal gene position contains  scripts in R and Python that are used in conjuction to analyze genes expressed with their position on their chromosome.
+
+Requirements:
+visualizer.py
+-- Python version 3.9.15
+-- Imports: pandas, matplotlib, seaborn, scipy, numpy, sklearn
+LOY Graphs.ipynb and cell-gene-Y.ipynb
+-- Python version 3.11.4 run through Jupyter Notebook
+-- Imports: numpy, pandas, anndata, matplotlib, seaborn, scipy
 
 Credits:
 visualizer.py - Eitan Zemel
