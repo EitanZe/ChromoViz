@@ -6,10 +6,11 @@ Instructions: From the data processing file, users can export csvs with scores p
 
 visualizer.py is meant to be used as a library to be used in conjuction with scripts like data processing.ipynb to eliminate the need to export to csv then load csv, but can also be run as a standalone program.
 
-
+The folder chromosomal gene position contains a script in R and Python that are used in conjuction to analyze genes expressed with their position on their chromosome.
 
 Credits:
 visualizer.py - Eitan Zemel
-data processor.ipynb - Shane Weinberger (Github: smw14)
-austin
-maia
+data processor.ipynb - Shane Weinberger (GitHub: smw14)
+chromosomal gene position - Maia Walzer
+
+v1.0 created July 17, 2023

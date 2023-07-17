@@ -1,0 +1,17 @@
+#An R program to use the biomaRt package to access all of the genes on a particular chromosome and obtain relevant information (in this case the start position, end position, band, and different forms of ID) and then export the product as a csv
+
+
+#preliminary steps
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("biomaRt")
+library("biomaRt")
+
+#can replace individual attributes, filters, values with those desired for particular project
+geneposition<-getBM(attributes = c('ensembl_gene_id', 'hgnc_symbol','start_position', 'end_position', 'band'), 
+      filters = c('chromosome_name','start','end'),
+      values = list('Y',000001,102500000), 
+      mart = ensembl)
+
+#exporting the file
+write.csv(geneposition, "C:\\Users\\maiaw\\Documents\\ISSI\\LOY\\geneposition.csv", row.names=FALSE)
