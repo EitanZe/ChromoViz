@@ -14,7 +14,6 @@ def load_data() -> tuple[pd.DataFrame,pd.DataFrame]:
     Called in main.
     '''
 
-
     main_df = pd.read_csv('data/csvs/LOY and LOX Master.csv')
     
     cell_type_yscr_df = pd.read_csv('data/csvs/Donor-CellType-Yscore 2000UMI (no X genes).csv')
