@@ -108,10 +108,10 @@ def scr_against_misc(df:pd.DataFrame, save:bool, med:bool, chr:str, benchmark:in
         __add_best_fit(male_df[x],male_df[y])
         __add_best_fit(female_df[x],female_df[y])
 
-        plt.legend(loc="center left")
-        plt.xlabel(x)
-        plt.ylabel(y)
-        plt.title(f'Indiv. {norm}. {chr}-Score x {col}, Benchmark {benchmark}')
+        plt.legend(loc="center left", fontsize=12)
+        plt.xlabel(x, fontsize=12)
+        plt.ylabel(y, fontsize=12)
+        plt.title(f'Indiv. {norm}. {chr}-Score x {col}, Benchmark {benchmark}', fontsize=12)
         if save:
             try:
                 plt.savefig(f'{dir}/Indiv. {norm}. {chr}-Score x {col}, Benchmark {benchmark}.png')
@@ -144,7 +144,7 @@ def __add_best_fit(x,y):
         
         # Add R-squared value as text
         r_squared_label = f"R-squared: {r_squared:.4f}" # include up to 4 dec. places
-        plt.text(25, slope * 25 + intercept, r_squared_label, fontsize=8, color='black',
+        plt.text(25, slope * 25 + intercept, r_squared_label, fontsize=10, color='black',
                  bbox=dict(facecolor=(1,1,1,.85), edgecolor='black', boxstyle='round,pad=0.5'))
 
 def cell_type_indiv(cell_df:pd.DataFrame, meta_df:pd.DataFrame,save:bool, chr:str, dir=''):
@@ -200,7 +200,8 @@ def cell_type_indiv(cell_df:pd.DataFrame, meta_df:pd.DataFrame,save:bool, chr:st
         pvalue = ctype_pvalue(subset,chr)
         if pvalue <= 10**-6:
             pvalue = f"< 10^{math.floor(math.log10(pvalue))+1}"
-        legend = plt.legend(loc=1,labels=[f'p-value = {pvalue}'], handletextpad=0, handlelength=0, markerscale=0,framealpha=1)
+        legend = plt.legend(loc=1,labels=[f'p-value = {pvalue}'], fontsize=12,
+                            handletextpad=0, handlelength=0, markerscale=0,framealpha=1)
         legend.get_frame().set_facecolor('lightgray')
         for handle in legend.legend_handles:
             handle.set_linestyle('')
@@ -330,10 +331,10 @@ def y_zero_cell(cell_df:pd.DataFrame, meta_df:pd.DataFrame, save:bool, dir=''):
     __add_best_fit(age_f,percent_zero_f)
     __add_best_fit(age_m,percent_zero_m)
     
-    plt.xlabel('Age')
-    plt.ylabel('% Cells with 0 Y-Chr UMI')
-    plt.title('Percent 0 Y-UMIs by Age')
-    plt.legend(loc="center left")
+    plt.xlabel('Age', fontsize=12)
+    plt.ylabel('% Cells with 0 Y-Chr UMI', fontsize=12)
+    plt.title('Percent 0 Y-UMIs by Age', fontsize=12)
+    plt.legend(loc="center left", fontsize=12)
     if save:
         plt.savefig(f'{dir}/y-chr percent 0 per person.png')
     else:
@@ -342,9 +343,9 @@ def y_zero_cell(cell_df:pd.DataFrame, meta_df:pd.DataFrame, save:bool, dir=''):
 
 def main():
     main_df, type_df = load_data()
-    cell_type_indiv(type_df, main_df,True, 'Y', dir=data_path)
+    # cell_type_indiv(type_df, main_df,True, 'Y', dir=data_path)
     # cell_type_sex(type_df, main_df,True, 'Y', 'male',dir=data_path)
-    # scr_against_misc(main_df, True, False, 'Y', 2000,only_age=True,dir=data_path)
+    scr_against_misc(main_df, True, True, 'Y', 2000,only_age=True,dir=data_path)
     # y_zero_cell(type_df, main_df, True,dir=data_path)
     # print(compare_scores(old_scores_df, new_y_cells)[0:50])
 
