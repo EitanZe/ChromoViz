@@ -10,6 +10,6 @@ visualizer.py is meant to be used as a library to be used in conjuction with scr
 
 Credits:
 visualizer.py - Eitan Zemel
-data processor.ipynb - Shane Weinberger
+data processor.ipynb - Shane Weinberger (Github: smw14)
 austin
 maia
