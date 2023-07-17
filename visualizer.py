@@ -37,7 +37,7 @@ def __meta_per_id(df:pd.DataFrame) -> tuple[dict,dict]:
             pass
     return id_to_age,id_to_sex
 
-def scr_against_misc(df:pd.DataFrame, save:bool, med:bool, chr:str, benchmark:int,only_age=False,dir=''):    
+def scr_against_misc(df:pd.DataFrame, save:bool, med:bool, chr:str, benchmark:int, only_age=False,dir=''):    
     '''Plot individuals by various against chr-score.
 
     Parameters
@@ -95,8 +95,8 @@ def scr_against_misc(df:pd.DataFrame, save:bool, med:bool, chr:str, benchmark:in
         plt.scatter(male_df[x], male_df[y], color = 'blue', label='Male')
         plt.scatter(female_df[x], female_df[y], color='red', label='Female')
 
-        __add_best_fit(male_df[x],male_df[y])
-        __add_best_fit(female_df[x],female_df[y])
+        add_best_fit(male_df[x],male_df[y])
+        add_best_fit(female_df[x],female_df[y])
 
         plt.legend(loc="center left", fontsize=12)
         plt.xlabel(x, fontsize=12)
@@ -115,8 +115,26 @@ def scr_against_misc(df:pd.DataFrame, save:bool, med:bool, chr:str, benchmark:in
 
         plt.close()
 
-def __add_best_fit(x,y):
-        '''Add to a graph the line of best fit labelled with R-Squared value
+def add_best_fit(x,y, plot=None):
+        '''Add to a graph the line of best fit labeled with R-Squared value.
+
+        Used locally as a helper method for all scatter plots. Can be used to
+        add a line of best fit (degree 1) and labeled r-squared value to a different
+        plot using the optional plot parameter.
+
+        Parameters
+        ----------
+        x, y - vectors of data plotted against each other. Must match the data in the plot.
+
+        Example
+        -------
+        fig, axs = plt.subplots(1, 2, figsize=(12, 5))
+
+        plot_male = axs[0].scatter(age_m, percent_zero_m, color='blue', label='Male')
+        plot_female = axs[1].scatter(age_f, percent_zero_f, color='red', label='Female')
+
+        add_best_fit(age_m, percent_zero_m, axs[0])
+        add_best_fit(age_f, percent_zero_f, axs[1])
         '''
 
         # Calculate the regression line
@@ -127,25 +145,30 @@ def __add_best_fit(x,y):
         # Calculate R-squared value
         y_pred = slope * np.array(x) + intercept
         r_squared = r2_score(y, y_pred)
-
-        plt.plot(x_range, regression_line_m, color='black',
-                 linestyle = 'dotted' if r_squared <.05 else 'solid')
-
         
         # Add R-squared value as text
         r_squared_label = f"R-squared: {r_squared:.4f}" # include up to 4 dec. places
-        plt.text(25, slope * 25 + intercept, r_squared_label, fontsize=10, color='black',
+
+        if plot!=None:
+            plot.plot(x_range, regression_line_m, color='black',
+                 linestyle = 'dotted' if r_squared <.05 else 'solid')
+            plot.text(25, slope * 25 + intercept, r_squared_label, fontsize=10, color='black',
+                 bbox=dict(facecolor=(1,1,1,.85), edgecolor='black', boxstyle='round,pad=0.5')) 
+        else: #for local calls
+            plt.plot(x_range, regression_line_m, color='black',
+                 linestyle = 'dotted' if r_squared <.05 else 'solid')
+            plt.text(25, slope * 25 + intercept, r_squared_label, fontsize=10, color='black',
                  bbox=dict(facecolor=(1,1,1,.85), edgecolor='black', boxstyle='round,pad=0.5'))
 
 def cell_type_indiv(cell_df:pd.DataFrame, meta_df:pd.DataFrame,save:bool, chr:str, dir=''):
-    '''Generate and save violin plots for every donor with with a separate violin per gene.
+    '''Generate and save violin plots for every donor with with a separate violin per cell type.
     
     The p-value displayed is taken using a one-way ANOVA test excluding the
     unknown cells.
 
     Parameters
     ----------
-    cell_df - pd.DataFrame of individual cells
+    cell_df - pd.DataFrame of individual cells with their gene expression
     
     meta_df - pd.DataFrame with information about the age and sex of each donor
     
@@ -167,7 +190,6 @@ def cell_type_indiv(cell_df:pd.DataFrame, meta_df:pd.DataFrame,save:bool, chr:st
     '''
     _,id_to_sex = __meta_per_id(meta_df)
     
-    # df.sort_values("Donor ID", inplace=True)
     id_list = cell_df["Donor ID"].unique()
     
     # df.drop(df[df['Cell Type'] == 'unassigned'].index, inplace = True)  # get rid of unassigned cells
@@ -190,7 +212,7 @@ def cell_type_indiv(cell_df:pd.DataFrame, meta_df:pd.DataFrame,save:bool, chr:st
         pvalue = ctype_pvalue(subset,chr)
         if pvalue <= 10**-6:
             pvalue = f"< 10^{math.floor(math.log10(pvalue))+1}"
-        legend = plt.legend(loc=1,labels=[f'p-value = {pvalue}'], fontsize=12,
+        legend = plt.legend(loc=1,labels=[f'p-value = {pvalue}'], fontsize=10,
                             handletextpad=0, handlelength=0, markerscale=0,framealpha=1)
         legend.get_frame().set_facecolor('lightgray')
         for handle in legend.legend_handles:
@@ -208,6 +230,11 @@ def cell_type_indiv(cell_df:pd.DataFrame, meta_df:pd.DataFrame,save:bool, chr:st
         
 def ctype_pvalue(df:pd.DataFrame, chr:str) -> float:
     '''Generate p-value for differences between cell type using one-way ANOVA test.
+
+    Parameters
+    ----------
+    df - pd.DataFrame, must include columns "Cell Type" and "{chr} Score"
+    chr - str, must match up with the column in the df for the data evaluation
 
     Helper method for cell_type_sex and cell_type_indiv
     '''
@@ -307,7 +334,7 @@ def y_zero_cell(cell_df:pd.DataFrame, meta_df:pd.DataFrame, save:bool, dir=''):
         if id == 'unassigned': continue  # don't need an unassigned graph
         subset = cell_df.loc[cell_df['Donor ID'] == id]
         total = len(subset['Donor ID'])
-        zero = len(subset.loc[cell_df['Y Score'] == 0]['Donor ID'])
+        zero = len(subset.loc[cell_df['Y Score'] == 0]['Donor ID']) # Y specific line
         percent = zero/total
         if id_to_sex[str(id)] == 'male':
             age_m.append(id_to_age[str(int(id))])
@@ -318,15 +345,17 @@ def y_zero_cell(cell_df:pd.DataFrame, meta_df:pd.DataFrame, save:bool, dir=''):
     plt.scatter(age_m, percent_zero_m, color = 'blue', label='Male')
     plt.scatter(age_f, percent_zero_f, color='red', label='Female')
     
-    __add_best_fit(age_f,percent_zero_f)
-    __add_best_fit(age_m,percent_zero_m)
+
+
+    add_best_fit(age_f,percent_zero_f)
+    add_best_fit(age_m,percent_zero_m)
     
     plt.xlabel('Age', fontsize=12)
-    plt.ylabel('% Cells with 0 Y-Chr UMI', fontsize=12)
-    plt.title('Percent 0 Y-UMIs by Age', fontsize=12)
-    plt.legend(loc="center left", fontsize=12)
+    plt.ylabel('% Cells with 0 Y-Chr UMI', fontsize=12) # Y specific line
+    plt.title('Percent 0 Y-UMIs by Age', fontsize=12) # Y specific line
+    plt.legend(loc="center left", fontsize=10)
     if save:
-        plt.savefig(f'{dir}/y-chr percent 0 per person.png')
+        plt.savefig(f'{dir}/y-chr percent 0 per person.png') # Y specific line
     else:
         plt.show()
     plt.close()
@@ -335,8 +364,8 @@ def main():
     main_df, type_df = load_data()
     # cell_type_indiv(type_df, main_df,True, 'Y', dir=data_path)
     # cell_type_sex(type_df, main_df,True, 'Y', 'male',dir=data_path)
-    scr_against_misc(main_df, True, True, 'Y', 2000,only_age=True,dir=data_path)
-    # y_zero_cell(type_df, main_df, True,dir=data_path)
+    # scr_against_misc(main_df, True, True, 'Y', 2000,only_age=True,dir=data_path)
+    y_zero_cell(type_df, main_df, False,dir=data_path)
     # print(compare_scores(old_scores_df, new_y_cells)[0:50])
 
 if __name__ == '__main__':
