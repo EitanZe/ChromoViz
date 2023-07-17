@@ -20,5 +20,6 @@ Credits:
 visualizer.py - Eitan Zemel
 data processor.ipynb - Shane Weinberger (GitHub: smw14)
 chromosomal gene position - Maia Walzer
+LOY Graphs.ipynb, cell-gene-Y.ipynb - Austin Feng
 
 v1.0 created July 17, 2023
