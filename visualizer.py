@@ -5,6 +5,7 @@ from scipy.stats import f_oneway
 import numpy as np
 import os
 from sklearn.metrics import r2_score
+import math
 ###
 data_path = 'data/graphs'
 
@@ -197,6 +198,8 @@ def cell_type_indiv(cell_df:pd.DataFrame, meta_df:pd.DataFrame,save:bool, chr:st
         plt.ylabel(ylabel=f"{chr} Score",fontsize=14)
 
         pvalue = ctype_pvalue(subset,chr)
+        if pvalue <= 10**-6:
+            pvalue = f"< 10^{math.floor(math.log10(pvalue))+1}"
         legend = plt.legend(loc=1,labels=[f'p-value = {pvalue}'], handletextpad=0, handlelength=0, markerscale=0,framealpha=1)
         legend.get_frame().set_facecolor('lightgray')
         for handle in legend.legend_handles:
@@ -208,8 +211,8 @@ def cell_type_indiv(cell_df:pd.DataFrame, meta_df:pd.DataFrame,save:bool, chr:st
             plt.show()
             break
         plt.savefig(f'{dir}/indiv_type_{chr}scr/Donor {id} {chr}.png')
-        if sex == 'm':
-            break
+        # if sex == 'm':
+        #     break
         plt.close()
         
 def ctype_pvalue(df:pd.DataFrame, chr:str) -> float:
