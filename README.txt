@@ -17,9 +17,9 @@ LOY Graphs.ipynb and cell-gene-Y.ipynb
 -- Imports: numpy, pandas, anndata, matplotlib, seaborn, scipy
 
 Credits:
-visualizer.py - Eitan Zemel
-data processor.ipynb - Shane Weinberger (GitHub: smw14)
-chromosomal gene position - Maia Walzer
-LOY Graphs.ipynb, cell-gene-Y.ipynb - Austin Feng
+Eitan Zemel - visualizer.py
+Shane Weinberger (GitHub: smw14) - data processor.ipynb
+Maia Walzer - chromosomal gene position
+Austin Feng - LOY Graphs.ipynb, cell-gene-Y.ipynb
 
 v1.0 created July 17, 2023
