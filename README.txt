@@ -15,6 +15,12 @@ visualizer.py
 LOY Graphs.ipynb and cell-gene-Y.ipynb
 -- Python version 3.11.4 run through Jupyter Notebook
 -- Imports: numpy, pandas, anndata, matplotlib, seaborn, scipy
+data processor.ipynb
+-- Python version 3.9.1
+-- Imports: numpy, pandas, anndata, matplotlib, seaborn, scipy
+chromosomal gene position
+-- Python version 3.11.4, R version 4.3.1
+-- Imports: pandas, matplotlib
 
 Credits:
 Eitan Zemel - visualizer.py
