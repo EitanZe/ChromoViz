@@ -28,4 +28,4 @@ Shane Weinberger (GitHub: smw14) - data processor.ipynb
 Maia Walzer - chromosomal gene position
 Austin Feng - LOY Graphs.ipynb, cell-gene-Y.ipynb
 
-v1.0 created July 17, 2023
+v1.0 created July 19, 2023
